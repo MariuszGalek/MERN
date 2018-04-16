@@ -3,6 +3,8 @@ export default {
   messages: {
     siteTitle: 'MERN blog de démarrage',
     addPost: 'Ajouter Poster',
+    VOTES: 'VOTES',
+    vote: 'vote',
     editPost: 'Edit Post',
     switchLanguage: 'Changer de langue',
     twitterMessage: 'Nous sommes sur Twitter',
