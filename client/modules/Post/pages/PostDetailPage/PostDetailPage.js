@@ -1,20 +1,18 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-import { getShowEditPost } from '../../../App/AppReducer';
-import { fetchPost, editPostRequest } from '../../PostActions';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { toggleEditPost } from '../../../App/AppActions';
-import { injectIntl, FormattedMessage } from 'react-intl';
 
 // Import Style
 import styles from '../../components/PostListItem/PostListItem.css';
 
 // Import Actions
-import { fetchPost } from '../../PostActions';
+import { fetchPost, editPostRequest } from '../../PostActions';
 
 // Import Selectors
 import { getPost } from '../../PostReducer';
+import { getShowEditPost } from '../../../App/AppReducer';
 
 export class PostDetailPage extends Component {
   constructor(props) {
@@ -26,32 +24,32 @@ export class PostDetailPage extends Component {
     };
   }
 
-  handleInputChange = (event) => {
+  handleInputChange(event) {
     const { value, name } = event.target;
-
+  
     this.setState({
       [name]: value,
     });
   };
 
-  handleEditPost = () => {
+  handleEditPost() {
     this.props.toggleEditPost();
     this.props.editPostRequest(this.state);
   };
 
-  renderPostForm = () => {
+  renderPostForm() {
     return (
       <div className={styles['form-content']}>
         <h2 className={styles['form-title']}><FormattedMessage id="editPost" /></h2>
-        <input placeholder={this.props.intl.messages.authorName} className={styles['form-field']} name="name" value={this.state.name} onChange={this.handleInputChange}/>
-        <input placeholder={this.props.intl.messages.postTitle} className={styles['form-field']} name="title" value={this.state.title} onChange={this.handleInputChange}/>
-        <textarea placeholder={this.props.intl.messages.postContent} className={styles['form-field']} name="content" value={this.state.content} onChange={this.handleInputChange}/>
-        <a className={styles['post-submit-button']} href="#" onClick={this.handleEditPost}><FormattedMessage id="submit" /></a>
+        <input placeholder={this.props.intl.messages.authorName} className={styles['form-field']} name="name" value={this.state.name} onChange={(e) => this.handleInputChange(e)}/>
+        <input placeholder={this.props.intl.messages.postTitle} className={styles['form-field']} name="title" value={this.state.title} onChange={(e) => this.handleInputChange(e)}/>
+        <textarea placeholder={this.props.intl.messages.postContent} className={styles['form-field']} name="content" value={this.state.content} onChange={(e) => this.handleInputChange(e)}/>
+        <a className={styles['post-submit-button']} href="#" onClick={() => this.handleEditPost()}><FormattedMessage id="submit" /></a>
       </div>
     );
   };
 
-  renderPost = () => {
+  renderPost() {
     return (
       <div className={`${styles['single-post']} ${styles['post-detail']}`}>
         <h3 className={styles['post-title']}>{this.props.post.title}</h3>
@@ -62,19 +60,16 @@ export class PostDetailPage extends Component {
   };
 
   render() {
-    const {props} = this;
-    return(
+    return (
       <div>
         <Helmet title={this.props.post.title} />
         <a className={styles['edit-post-button']} href="#" onClick={this.props.toggleEditPost}><FormattedMessage id="editPost" /></a>
         {
-          this.props.showEditPost
-            ? this.renderPostForm()
-            : this.renderPost()
+          this.props.showEditPost ? this.renderPostForm() : this.renderPost()
         }
       </div>
     );
-  }
+  } 
 }
 
 // Actions required to provide data for this component to render in server side.
